@@ -13,7 +13,7 @@ export const profile = {
   city: 'Angers',
   country: 'France',
   birthDate: '2005-08-17',
-  github: 'https://github.com/NFD7J',
+  github: 'https://github.com/noefresneauderouet',
   githubHandle: 'NFD7J',
   linkedin: 'https://www.linkedin.com/in/nfd17',
   linkedinHandle: 'nfd17',
