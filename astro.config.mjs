@@ -4,7 +4,7 @@ import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 
 // Remplace par ton vrai domaine Vercel une fois le projet deploye.
-const SITE = 'https://portfolio-nfd.vercel.app';
+const SITE = 'http://noe-fresneauderouet.angers.mds-project.fr';
 
 export default defineConfig({
   site: SITE,
