@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="text" x1="80" y1="0" x2="900" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#8b5cf6" />
+      <stop offset="0.5" stop-color="#22d3ee" />
+      <stop offset="1" stop-color="#e879f9" />
+    </linearGradient>
+    <radialGradient id="b1" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse"
+      gradientTransform="translate(160 90) scale(520)">
+      <stop offset="0" stop-color="#8b5cf6" stop-opacity="0.75" />
+      <stop offset="1" stop-color="#8b5cf6" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="b2" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse"
+      gradientTransform="translate(1090 220) scale(460)">
+      <stop offset="0" stop-color="#22d3ee" stop-opacity="0.5" />
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="b3" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse"
+      gradientTransform="translate(640 660) scale(520)">
+      <stop offset="0" stop-color="#e879f9" stop-opacity="0.4" />
+      <stop offset="1" stop-color="#e879f9" stop-opacity="0" />
+    </radialGradient>
+    <pattern id="grid" width="62" height="62" patternUnits="userSpaceOnUse">
+      <path d="M62 0H0V62" fill="none" stroke="#ffffff" stroke-opacity="0.05" stroke-width="1" />
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="630" fill="#05060a" />
+  <rect width="1200" height="630" fill="url(#grid)" />
+  <rect width="1200" height="630" fill="url(#b1)" />
+  <rect width="1200" height="630" fill="url(#b2)" />
+  <rect width="1200" height="630" fill="url(#b3)" />
+
+  <g font-family="'Space Grotesk', 'Segoe UI', system-ui, sans-serif">
+    <g transform="translate(80 96)">
+      <rect width="56" height="56" rx="14" fill="url(#text)" />
+      <text x="28" y="36" text-anchor="middle" font-size="19" font-weight="700" fill="#05060a">NFD</text>
+    </g>
+
+    <text x="152" y="132" font-size="20" fill="#9aa3bd" letter-spacing="4">ANGERS · FRANCE</text>
+
+    <text x="80" y="300" font-size="92" font-weight="700" fill="#e8eaf4" letter-spacing="-3">NOÉ FRESNEAU</text>
+    <text x="80" y="396" font-size="92" font-weight="700" fill="url(#text)" letter-spacing="-3">DEROUET</text>
+
+    <text x="80" y="470" font-size="30" fill="#9aa3bd">Développeur web full-stack · React · Next.js · TypeScript · PHP</text>
+
+    <g transform="translate(80 512)">
+      <rect width="386" height="46" rx="23" fill="#ffffff" fill-opacity="0.05" stroke="#ffffff" stroke-opacity="0.14" />
+      <circle cx="26" cy="23" r="5" fill="#22d3ee" />
+      <text x="46" y="29" font-size="18" fill="#e8eaf4">Disponible pour une alternance · 2026-2027</text>
+    </g>
+  </g>
+</svg>

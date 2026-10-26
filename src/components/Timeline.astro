@@ -1,0 +1,93 @@
+---
+import SectionHeading from './SectionHeading.astro';
+import { useTranslations, type Lang } from '../i18n';
+import { education, experience, sideJobs, type TimelineEntry } from '../data/profile';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+type Copy = { title: string; org: string; text: string };
+const copyFor = (entry: TimelineEntry): Copy =>
+  t.path.items[entry.id as keyof typeof t.path.items];
+
+const columns = [
+  { title: t.path.educationTitle, entries: education, dot: 'from-violet to-fuchsia' },
+  { title: t.path.experienceTitle, entries: experience, dot: 'from-cyan to-violet' },
+];
+---
+
+<section id="path" class="relative scroll-mt-24 py-24 sm:py-32">
+  <div class="container-x">
+    <SectionHeading index="04" eyebrow={t.path.eyebrow} title={t.path.title} />
+
+    <div class="grid gap-14 lg:grid-cols-2 lg:gap-12">
+      {
+        columns.map((column) => (
+          <div data-reveal>
+            <h3 class="text-[11px] tracking-[0.24em] text-faint uppercase">{column.title}</h3>
+
+            <ol class="relative mt-8 space-y-9 pl-8">
+              <span
+                class="timeline-line absolute left-[5px] top-1 bottom-1 w-px"
+                aria-hidden="true"
+              />
+
+              {column.entries.map((entry) => {
+                const copy = copyFor(entry);
+                return (
+                  <li data-reveal-child class="group relative">
+                    <span
+                      class:list={[
+                        'absolute -left-8 top-1.5 h-[11px] w-[11px] rounded-full bg-linear-to-br ring-4 ring-ink transition-transform duration-300 group-hover:scale-125',
+                        column.dot,
+                      ]}
+                      aria-hidden="true"
+                    />
+                    <p class="font-display text-[13px] tabular-nums tracking-wide text-cyan">
+                      {entry.period}
+                    </p>
+                    <h4 class="mt-1.5 font-display text-lg leading-snug font-semibold tracking-tight text-body">
+                      {copy.title}
+                    </h4>
+                    <p class="mt-0.5 text-[13px] text-violet/90">{copy.org}</p>
+                    <p class="mt-2.5 text-[14px] leading-relaxed text-muted">{copy.text}</p>
+                  </li>
+                );
+              })}
+            </ol>
+          </div>
+        ))
+      }
+    </div>
+
+    <div data-reveal class="mt-20">
+      <div class="flex flex-wrap items-baseline justify-between gap-3">
+        <h3 class="text-[11px] tracking-[0.24em] text-faint uppercase">{t.path.sideTitle}</h3>
+        <p class="text-[13px] text-faint">{t.path.sideSubtitle}</p>
+      </div>
+
+      <ul class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          sideJobs.map((entry) => {
+            const copy = copyFor(entry);
+            return (
+              <li
+                data-reveal-child
+                class="spotlight group relative overflow-hidden rounded-2xl border border-line bg-ink-2/60 p-5 transition-colors duration-500 hover:border-line-strong"
+              >
+                <p class="font-display text-[13px] tabular-nums text-faint">{entry.period}</p>
+                <h4 class="mt-2 text-[15px] leading-snug font-semibold text-body">{copy.title}</h4>
+                <p class="mt-1 text-[13px] text-muted">{copy.org}</p>
+                <p class="mt-3 text-[13px] leading-relaxed text-faint">{copy.text}</p>
+              </li>
+            );
+          })
+        }
+      </ul>
+    </div>
+  </div>
+</section>

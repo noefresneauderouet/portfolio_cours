@@ -1,0 +1,163 @@
+---
+import { useTranslations, type Lang } from '../i18n';
+import { profile, marquee } from '../data/profile';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const fullName = `${profile.firstName} ${profile.lastName}`;
+const line1 = 'NOÉ FRESNEAU';
+const line2 = 'DEROUET';
+
+/** Decoupe en mots puis en lettres pour l'animation en cascade. */
+const words = line1.split(' ').map((word) => [...word]);
+---
+
+<section
+  id="hero"
+  class="relative flex min-h-dvh flex-col justify-center overflow-hidden pt-28 pb-10"
+>
+  <div class="container-x">
+    <p
+      data-hero-fade
+      class="inline-flex items-center gap-2.5 rounded-full border border-line bg-white/[0.03] py-1.5 pl-2.5 pr-4 text-xs text-muted backdrop-blur-sm"
+    >
+      <span class="relative grid h-4 w-4 place-items-center">
+        <span
+          class="absolute h-1.5 w-1.5 rounded-full bg-cyan"
+          style="animation: pulse-dot 2.4s ease-in-out infinite;"></span>
+        <span class="h-1.5 w-1.5 rounded-full bg-cyan"></span>
+      </span>
+      {t.hero.badge}
+    </p>
+
+    <h1
+      class="mt-6 font-display text-[clamp(2.4rem,10.5vw,8.5rem)] leading-[0.88] font-bold tracking-[-0.04em]"
+      aria-label={fullName}
+    >
+      <span class="block" aria-hidden="true">
+        {
+          words.map((word, wordIndex) => (
+            <>
+              <span class="inline-block whitespace-nowrap">
+                {word.map((letter) => (
+                  <span data-hero-letter class="inline-block will-change-transform">
+                    {letter}
+                  </span>
+                ))}
+              </span>
+              {wordIndex < words.length - 1 && <span class="inline-block w-[0.22em]" />}
+            </>
+          ))
+        }
+      </span>
+      <span data-hero-fade class="block text-gradient" aria-hidden="true">{line2}</span>
+    </h1>
+
+    <div class="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
+      <div>
+        <p
+          data-hero-fade
+          class="flex flex-wrap items-center gap-x-3 gap-y-2 font-display text-lg tracking-tight text-body sm:text-xl"
+        >
+          {t.hero.role}
+          <span class="h-1 w-1 rounded-full bg-violet"></span>
+          <span class="text-muted">{t.hero.location}</span>
+        </p>
+
+        <p data-hero-fade class="mt-4 max-w-xl text-[15px] leading-relaxed text-muted sm:text-base">
+          {t.hero.tagline}
+        </p>
+
+        <div data-hero-fade class="mt-9 flex flex-wrap items-center gap-3">
+          <a
+            href="#projects"
+            data-magnetic="0.22"
+            class="group relative overflow-hidden rounded-full bg-linear-to-r from-violet to-cyan px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-violet/20 transition-shadow duration-300 hover:shadow-xl hover:shadow-violet/35"
+          >
+            <span class="relative z-10 flex items-center gap-2">
+              {t.hero.ctaPrimary}
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 14 14"
+                fill="none"
+                class="transition-transform duration-300 group-hover:translate-x-0.5"
+                aria-hidden="true"
+              >
+                <path
+                  d="M1 7h11M8 3l4 4-4 4"
+                  stroke="currentColor"
+                  stroke-width="1.6"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"></path>
+              </svg>
+            </span>
+            <span
+              class="absolute inset-0 -translate-x-full bg-linear-to-r from-cyan to-fuchsia transition-transform duration-500 group-hover:translate-x-0"
+            ></span>
+          </a>
+
+          <a
+            href="#contact"
+            data-magnetic="0.18"
+            class="rounded-full border border-line-strong px-6 py-3.5 text-sm font-semibold text-body transition-colors duration-300 hover:border-cyan/60 hover:bg-white/5"
+          >
+            {t.hero.ctaSecondary}
+          </a>
+        </div>
+      </div>
+
+      <ul data-hero-fade class="flex items-center gap-5 text-sm text-muted lg:flex-col lg:items-end">
+        <li>
+          <a href={profile.github} target="_blank" rel="noreferrer" class="link-underline hover:text-body">
+            GitHub ↗
+          </a>
+        </li>
+        <li>
+          <a href={profile.linkedin} target="_blank" rel="noreferrer" class="link-underline hover:text-body">
+            LinkedIn ↗
+          </a>
+        </li>
+        <li>
+          <a href={`mailto:${profile.email}`} class="link-underline hover:text-body">
+            {lang === 'fr' ? 'E-mail' : 'Email'} ↗
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="marquee-mask mt-16 overflow-hidden border-y border-line py-4">
+    <div class="marquee">
+      {
+        [0, 1].map(() => (
+          <div class="flex shrink-0 items-center gap-10 pr-10">
+            {marquee.map((item) => (
+              <span class="flex shrink-0 items-center gap-10 font-display text-sm tracking-wide text-faint uppercase">
+                {item}
+                <span class="h-1 w-1 rounded-full bg-violet/60" />
+              </span>
+            ))}
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  <a
+    href="#about"
+    class="container-x mt-10 flex items-center gap-3 text-[11px] tracking-[0.25em] text-faint uppercase transition-colors hover:text-muted"
+  >
+    <span class="relative grid h-8 w-5 place-items-start rounded-full border border-line pt-1.5">
+      <span
+        class="h-1.5 w-1 rounded-full bg-cyan"
+        style="animation: scroll-hint 2s ease-in-out infinite;"></span>
+    </span>
+    {t.hero.scroll}
+  </a>
+</section>

@@ -1,0 +1,24 @@
+---
+import Base from '../layouts/Base.astro';
+import type { Lang } from '../i18n';
+
+const lang: Lang = 'fr';
+---
+
+<Base lang={lang}>
+  <section class="flex min-h-dvh items-center justify-center px-6 text-center">
+    <div>
+      <p class="font-display text-[clamp(5rem,22vw,14rem)] leading-none font-bold text-gradient">
+        404
+      </p>
+      <p class="mt-4 text-lg text-body">Cette page n’existe pas.</p>
+      <p class="mt-1 text-sm text-muted">This page does not exist.</p>
+      <a
+        href="/"
+        class="mt-9 inline-block rounded-full bg-linear-to-r from-violet to-cyan px-6 py-3.5 text-sm font-semibold text-white"
+      >
+        Retour à l’accueil
+      </a>
+    </div>
+  </section>
+</Base>

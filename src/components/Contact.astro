@@ -1,0 +1,131 @@
+---
+import { useTranslations, type Lang } from '../i18n';
+import { profile } from '../data/profile';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<section id="contact" class="relative scroll-mt-24 py-24 sm:py-32">
+  <div class="container-x">
+    <div
+      data-reveal
+      class="border-glow relative overflow-hidden rounded-[28px] border border-line bg-ink-2/70 px-6 py-16 text-center sm:px-12 sm:py-24"
+    >
+      <div
+        class="pointer-events-none absolute left-1/2 top-0 h-64 w-[110%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-violet/20 blur-[100px]"
+        aria-hidden="true"
+      >
+      </div>
+
+      <div class="relative">
+        <div class="flex items-center justify-center gap-3">
+          <span class="h-px w-8 bg-line-strong"></span>
+          <span class="text-[11px] tracking-[0.28em] text-faint uppercase">{t.contact.eyebrow}</span>
+          <span class="h-px w-8 bg-line-strong"></span>
+        </div>
+
+        <h2
+          data-reveal-child
+          class="mx-auto mt-6 max-w-3xl font-display text-[clamp(2rem,6.5vw,4.5rem)] leading-[1] font-bold"
+        >
+          <span class="text-gradient">{t.contact.title}</span>
+        </h2>
+
+        <p data-reveal-child class="mx-auto mt-6 max-w-xl text-[15px] leading-relaxed text-muted">
+          {t.contact.subtitle}
+        </p>
+
+        <div data-reveal-child class="mt-10 flex flex-wrap items-center justify-center gap-3">
+          <a
+            href={`mailto:${profile.email}`}
+            data-magnetic="0.2"
+            class="group relative overflow-hidden rounded-full bg-linear-to-r from-violet to-cyan px-7 py-4 text-sm font-semibold text-white shadow-lg shadow-violet/25 transition-shadow duration-300 hover:shadow-xl hover:shadow-violet/40"
+          >
+            <span class="relative z-10">{t.contact.cta}</span>
+            <span
+              class="absolute inset-0 -translate-x-full bg-linear-to-r from-cyan to-fuchsia transition-transform duration-500 group-hover:translate-x-0"
+            ></span>
+          </a>
+
+          <a
+            href={profile.cv}
+            download
+            data-magnetic="0.16"
+            class="rounded-full border border-line-strong px-7 py-4 text-sm font-semibold text-body transition-colors duration-300 hover:border-cyan/60 hover:bg-white/5"
+          >
+            {t.contact.cvCta}
+          </a>
+        </div>
+
+        <dl class="mx-auto mt-14 grid max-w-2xl gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-2">
+          <div class="bg-ink-2 px-5 py-5 text-left">
+            <dt class="text-[10px] tracking-[0.2em] text-faint uppercase">
+              {t.contact.emailLabel}
+            </dt>
+            <dd class="mt-2 flex items-center justify-between gap-3">
+              <a
+                href={`mailto:${profile.email}`}
+                class="link-underline truncate text-sm text-body"
+              >
+                {profile.email}
+              </a>
+              <button
+                type="button"
+                data-copy={profile.email}
+                data-label-idle={t.contact.copy}
+                data-label-done={t.contact.copied}
+                class="shrink-0 rounded-md border border-line px-2 py-1 text-[11px] text-muted transition-colors hover:border-line-strong hover:text-body"
+              >
+                <span data-copy-label>{t.contact.copy}</span>
+              </button>
+            </dd>
+          </div>
+
+          <div class="bg-ink-2 px-5 py-5 text-left">
+            <dt class="text-[10px] tracking-[0.2em] text-faint uppercase">
+              {t.contact.phoneLabel}
+            </dt>
+            <dd class="mt-2">
+              <a href={`tel:${profile.phoneHref}`} class="link-underline text-sm text-body">
+                {profile.phone}
+              </a>
+            </dd>
+          </div>
+
+          <div class="bg-ink-2 px-5 py-5 text-left">
+            <dt class="text-[10px] tracking-[0.2em] text-faint uppercase">GitHub</dt>
+            <dd class="mt-2">
+              <a
+                href={profile.github}
+                target="_blank"
+                rel="noreferrer"
+                class="link-underline text-sm text-body"
+              >
+                @{profile.githubHandle} ↗
+              </a>
+            </dd>
+          </div>
+
+          <div class="bg-ink-2 px-5 py-5 text-left">
+            <dt class="text-[10px] tracking-[0.2em] text-faint uppercase">LinkedIn</dt>
+            <dd class="mt-2">
+              <a
+                href={profile.linkedin}
+                target="_blank"
+                rel="noreferrer"
+                class="link-underline text-sm text-body"
+              >
+                /{profile.linkedinHandle} ↗
+              </a>
+            </dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>

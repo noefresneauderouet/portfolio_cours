@@ -1,0 +1,116 @@
+---
+import '@fontsource-variable/inter';
+import '@fontsource-variable/space-grotesk';
+import '../styles/global.css';
+
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { useTranslations, type Lang } from '../i18n';
+import { profile } from '../data/profile';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = new URL('/og.png', Astro.site).href;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: `${profile.firstName} ${profile.lastName}`,
+  jobTitle: t.hero.role,
+  email: `mailto:${profile.email}`,
+  telephone: profile.phoneHref,
+  url: canonical,
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: profile.city,
+    addressCountry: 'FR',
+  },
+  sameAs: [profile.github, profile.linkedin],
+  knowsAbout: ['React', 'Next.js', 'TypeScript', 'PHP', 'Symfony', 'MySQL', 'Tailwind CSS'],
+};
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{t.meta.title}</title>
+    <meta name="description" content={t.meta.description} />
+    <meta name="author" content={`${profile.firstName} ${profile.lastName}`} />
+    <meta name="theme-color" content="#05060a" />
+    <link rel="canonical" href={canonical} />
+
+    <link rel="alternate" hreflang="fr" href={new URL('/', Astro.site).href} />
+    <link rel="alternate" hreflang="en" href={new URL('/en/', Astro.site).href} />
+    <link rel="alternate" hreflang="x-default" href={new URL('/', Astro.site).href} />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content={lang === 'fr' ? 'fr_FR' : 'en_US'} />
+    <meta property="og:title" content={t.meta.title} />
+    <meta property="og:description" content={t.meta.description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={t.meta.title} />
+    <meta name="twitter:description" content={t.meta.description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <script is:inline>
+      // Pose les classes avant le premier rendu : evite tout flash de contenu.
+      (function () {
+        var root = document.documentElement;
+        root.classList.add('js');
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          root.classList.add('no-motion');
+        }
+      })();
+    </script>
+
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+
+  <body class="min-h-dvh antialiased">
+    <div class="aurora" aria-hidden="true">
+      <div class="aurora__grid"></div>
+      <div class="aurora__blob aurora__blob--1"></div>
+      <div class="aurora__blob aurora__blob--2"></div>
+      <div class="aurora__blob aurora__blob--3"></div>
+    </div>
+    <div class="grain" aria-hidden="true"></div>
+
+    <div class="progress-bar" aria-hidden="true"></div>
+    <div class="cursor-ring" aria-hidden="true"></div>
+    <div class="cursor-dot" aria-hidden="true"></div>
+
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-100 focus:rounded-full focus:bg-violet focus:px-5 focus:py-2.5 focus:text-sm focus:font-medium focus:text-white"
+    >
+      {lang === 'fr' ? 'Aller au contenu' : 'Skip to content'}
+    </a>
+
+    <Nav lang={lang} />
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <Footer lang={lang} />
+
+    <script>
+      import '../scripts/main.ts';
+    </script>
+  </body>
+</html>

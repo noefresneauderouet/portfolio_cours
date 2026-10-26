@@ -1,0 +1,96 @@
+---
+import SectionHeading from './SectionHeading.astro';
+import { useTranslations, type Lang } from '../i18n';
+import { skillGroups } from '../data/profile';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const accents: Record<string, string> = {
+  frontend: '#8b5cf6',
+  backend: '#22d3ee',
+  tools: '#e879f9',
+  other: '#8b5cf6',
+};
+---
+
+<section id="skills" class="relative scroll-mt-24 py-24 sm:py-32">
+  <div class="container-x">
+    <SectionHeading
+      index="02"
+      eyebrow={t.skills.eyebrow}
+      title={t.skills.title}
+      subtitle={t.skills.subtitle}
+    />
+
+    <div data-reveal class="grid gap-4 sm:grid-cols-2">
+      {
+        skillGroups.map((group) => {
+          const label = t.skills.groups[group.id as keyof typeof t.skills.groups];
+          return (
+            <article
+              data-reveal-child
+              class="spotlight group relative overflow-hidden rounded-[20px] border border-line bg-ink-2/60 p-6 transition-colors duration-500 hover:border-line-strong"
+              style={`--spot: ${accents[group.id]}`}
+            >
+              <div class="flex items-baseline justify-between gap-4">
+                <h3 class="font-display text-lg font-semibold tracking-tight text-body">
+                  {label.title}
+                </h3>
+                <span class="text-[11px] tabular-nums text-faint">
+                  {String(group.items.length).padStart(2, '0')}
+                </span>
+              </div>
+
+              <p class="mt-1.5 text-[13px] text-faint">{label.hint}</p>
+
+              <ul class="mt-5 flex flex-wrap gap-2">
+                {group.items.map((item) => (
+                  <li class="rounded-lg border border-line bg-white/[0.03] px-2.5 py-1.5 text-[13px] text-muted transition-colors duration-300 group-hover:text-body">
+                    {item}
+                  </li>
+                ))}
+              </ul>
+
+              <div
+                class="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-40"
+                style={`background: ${accents[group.id]}`}
+                aria-hidden="true"
+              />
+            </article>
+          );
+        })
+      }
+    </div>
+
+    <div data-reveal class="mt-4 rounded-[20px] border border-line bg-ink-2/60 p-6">
+      <p class="text-[11px] tracking-[0.24em] text-faint uppercase">{t.skills.languagesTitle}</p>
+      <ul class="mt-5 grid gap-5 sm:grid-cols-2">
+        {
+          t.skills.languages.map((language) => (
+            <li data-reveal-child class="flex items-center justify-between gap-4">
+              <div>
+                <p class="text-sm font-medium text-body">{language.name}</p>
+                <p class="text-[13px] text-faint">{language.note}</p>
+              </div>
+              <div class="flex gap-1.5" role="img" aria-label={`${language.level}/5`}>
+                {[1, 2, 3, 4, 5].map((step) => (
+                  <span
+                    class:list={[
+                      'h-1.5 w-6 rounded-full',
+                      step <= language.level ? 'bg-linear-to-r from-violet to-cyan' : 'bg-line',
+                    ]}
+                  />
+                ))}
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>

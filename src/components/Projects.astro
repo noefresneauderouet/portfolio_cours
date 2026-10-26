@@ -1,0 +1,120 @@
+---
+import SectionHeading from './SectionHeading.astro';
+import { useTranslations, type Lang } from '../i18n';
+import { projects } from '../data/profile';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const accentHex: Record<string, string> = {
+  violet: '#8b5cf6',
+  cyan: '#22d3ee',
+  fuchsia: '#e879f9',
+};
+---
+
+<section id="projects" class="relative scroll-mt-24 py-24 sm:py-32">
+  <div class="container-x">
+    <SectionHeading
+      index="03"
+      eyebrow={t.projects.eyebrow}
+      title={t.projects.title}
+      subtitle={t.projects.subtitle}
+    />
+
+    <div class="grid gap-4 md:grid-cols-2">
+      {
+        projects.map((project, index) => {
+          const copy = t.projects.items[project.id as keyof typeof t.projects.items];
+          const hex = accentHex[project.accent];
+
+          return (
+            <article
+              data-reveal
+              class:list={[
+                'spotlight group relative flex flex-col overflow-hidden rounded-[24px] border border-line bg-ink-2/60 p-7 transition-all duration-500 hover:border-line-strong sm:p-9',
+                project.featured && 'md:col-span-2',
+              ]}
+              style={`--spot: ${hex}`}
+            >
+              <div
+                class="pointer-events-none absolute inset-x-0 top-0 h-px opacity-60"
+                style={`background: linear-gradient(90deg, transparent, ${hex}, transparent)`}
+                aria-hidden="true"
+              />
+
+              <div class="flex flex-wrap items-center gap-3">
+                <span class="font-display text-xs font-semibold tabular-nums text-faint">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <span
+                  class="rounded-full px-2.5 py-1 text-[11px] font-medium"
+                  style={`background: color-mix(in oklab, ${hex} 16%, transparent); color: ${hex}`}
+                >
+                  {copy.context}
+                </span>
+                {project.featured && (
+                  <span class="rounded-full border border-line px-2.5 py-1 text-[11px] text-muted">
+                    ★ {t.projects.featured}
+                  </span>
+                )}
+                <span class="ml-auto text-[13px] tabular-nums text-faint">{project.year}</span>
+              </div>
+
+              <h3 class="mt-5 font-display text-2xl leading-tight font-bold tracking-tight text-body sm:text-3xl">
+                <span class="title-underline">{copy.title}</span>
+              </h3>
+
+              <p class="mt-3 max-w-2xl text-[15px] leading-relaxed text-muted">{copy.summary}</p>
+
+              <ul class="mt-6 space-y-2.5">
+                {copy.details.map((detail) => (
+                  <li class="flex gap-3 text-[14px] leading-relaxed text-muted">
+                    <span
+                      class="mt-2 h-1 w-1 shrink-0 rounded-full"
+                      style={`background: ${hex}`}
+                      aria-hidden="true"
+                    />
+                    {detail}
+                  </li>
+                ))}
+              </ul>
+
+              <div class="mt-auto pt-7">
+                <p class="text-[10px] tracking-[0.22em] text-faint uppercase">
+                  {t.projects.stackLabel}
+                </p>
+                <ul class="mt-3 flex flex-wrap gap-1.5">
+                  {project.stack.map((tech) => (
+                    <li class="rounded-md border border-line bg-white/[0.03] px-2 py-1 font-display text-[11px] tracking-wide text-muted">
+                      {tech}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {project.links && project.links.length > 0 && (
+                <div class="mt-6 flex flex-wrap gap-4">
+                  {project.links.map((link) => (
+                    <a
+                      href={link.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      class="link-underline text-sm font-medium text-body"
+                    >
+                      {link.label} ↗
+                    </a>
+                  ))}
+                </div>
+              )}
+            </article>
+          );
+        })
+      }
+    </div>
+  </div>
+</section>
