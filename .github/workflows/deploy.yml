@@ -2,11 +2,9 @@ name: deploy
 
 on:
   push:
-    branches: [main]
-
-concurrency:
-  group: deploy-portfolio
-  cancel-in-progress: false
+    branches: [main, preprod]
+  pull_request:
+    branches: [main, preprod]
 
 jobs: 
   test:
@@ -26,7 +24,13 @@ jobs:
 
   deploy:
     needs: test
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
+    env:
+      DEPLOY_DIR: ${{github.ref_name == 'main' && '/var/www/portfolio' || '/var/www/portfolio-preprod'}}
+    concurrency:
+      group: deploy-portfolio
+      cancel-in-progress: false
     steps:
       - name: se connecter au serveur
         run: |
@@ -39,7 +43,7 @@ jobs:
         run: |
           ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
             set -e
-            cd /var/www/portfolio
+            cd ${{env.DEPLOY_DIR}}
             git fetch origin
             git reset --hard ${{github.sha}}
             npm ci
